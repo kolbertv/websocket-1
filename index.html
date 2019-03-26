@@ -19,9 +19,14 @@
       const WEBSOCKET_DISCONNECT = "WEBSOCKET:DISCONNECT";
       const WEBSOCKET_SEND = "WEBSOCKET:SEND";
 
+      const tokenWork =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk5YzFmNjkyNjA4MjQ4ZTVmOTA4NmIiLCJpYXQiOjE1NTM1ODA2MzcsImV4cCI6MTU1NjE3MjYzN30.Gn_lzVuaR2HEjHfLQo04v6MXaQQkYSqVCMlA2lbYyWU";
+
       const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk0MGNhYjAxNzRjYjI5ZTA2YWUyMzAiLCJpYXQiOjE1NTMzNTQyMDQsImV4cCI6MTU1NTk0NjIwNH0.daUoKosyt5i4eyKK0HSplfnJcnKc_bHDUk0eqFSd-CY";
-      const socket = new WebSocket(`ws://127.0.0.1:8888/socket?token=${token}`);
+      const socket = new WebSocket(
+        `ws://127.0.0.1:8888/socket?token=${tokenWork}`
+      );
 
       // `ws://127.0.0.1:8888/socket?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk0MGNhYjAxNzRjYjI5ZTA2YWUyMzAiLCJpYXQiOjE1NTMzNTQyMDQsImV4cCI6MTU1NTk0NjIwNH0.daUoKosyt5i4eyKK0HSplfnJcnKc_bHDUk0eqFSd-CY`
 
@@ -47,18 +52,24 @@
         writeLine(event.data);
       };
 
+      let recipient = "";
+
       msg.addEventListener("keydown", event => {
         if (event.keyCode === 13) {
-          const s = msg.value;
+          const text = msg.value;
           msg.value = "";
 
-          let a = JSON.stringify({
-            messages: "send",
-            text: "test"
+          writeLine(text);
+          socket.send({
+            type: WEBSOCKET_SEND,
+            payload: `[
+                  "messages:send",
+                  ${JSON.stringify({
+                    text,
+                    recipient,
+                    messageId: 15
+                  })}]`
           });
-
-          writeLine(s);
-          socket.send(a);
         }
       });
     </script>
