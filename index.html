@@ -1,68 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div id="chat"></div>
-    <input type="text" id="msg">
-
+    <input type="text" id="msg" />
 
     <script>
-        const token =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk0MGNhYjAxNzRjYjI5ZTA2YWUyMzAiLCJpYXQiOjE1NTMzNTQyMDQsImV4cCI6MTU1NTk0NjIwNH0.daUoKosyt5i4eyKK0HSplfnJcnKc_bHDUk0eqFSd-CY';
-        const socket = new WebSocket(`ws://127.0.0.1:8888/socket?token=${token}`)
+      const WEBSOCKET_CONNECT = "WEBSOCKET:CONNECT";
+      const WEBSOCKET_MESSAGE = "WEBSOCKET:MESSAGE";
+      const WEBSOCKET_OPEN = "WEBSOCKET:OPEN";
+      const WEBSOCKET_CLOSE = "WEBSOCKET:CLOSE";
+      const WEBSOCKET_DISCONNECT = "WEBSOCKET:DISCONNECT";
+      const WEBSOCKET_SEND = "WEBSOCKET:SEND";
 
-        // `ws://127.0.0.1:8888/socket?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk0MGNhYjAxNzRjYjI5ZTA2YWUyMzAiLCJpYXQiOjE1NTMzNTQyMDQsImV4cCI6MTU1NTk0NjIwNH0.daUoKosyt5i4eyKK0HSplfnJcnKc_bHDUk0eqFSd-CY`
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk0MGNhYjAxNzRjYjI5ZTA2YWUyMzAiLCJpYXQiOjE1NTMzNTQyMDQsImV4cCI6MTU1NTk0NjIwNH0.daUoKosyt5i4eyKK0HSplfnJcnKc_bHDUk0eqFSd-CY";
+      const socket = new WebSocket(`ws://127.0.0.1:8888/socket?token=${token}`);
 
-        const chat = document.getElementById('chat');
-        const msg = document.getElementById('msg');
-        msg.focus();
+      // `ws://127.0.0.1:8888/socket?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk0MGNhYjAxNzRjYjI5ZTA2YWUyMzAiLCJpYXQiOjE1NTMzNTQyMDQsImV4cCI6MTU1NTk0NjIwNH0.daUoKosyt5i4eyKK0HSplfnJcnKc_bHDUk0eqFSd-CY`
 
-        const writeLine = text => {
-            const line = document.createElement('div');
-            line.innerHTML = `<p>${text}</p>`;
-            chat.appendChild(line);
+      const chat = document.getElementById("chat");
+      const msg = document.getElementById("msg");
+      msg.focus();
+
+      const writeLine = text => {
+        const line = document.createElement("div");
+        line.innerHTML = `<p>${text}</p>`;
+        chat.appendChild(line);
+      };
+
+      socket.onopen = () => {
+        writeLine("connected");
+      };
+
+      socket.onclose = () => {
+        writeLine("closed");
+      };
+
+      socket.onmessage = event => {
+        writeLine(event.data);
+      };
+
+      msg.addEventListener("keydown", event => {
+        if (event.keyCode === 13) {
+          const s = msg.value;
+          msg.value = "";
+
+          let a = JSON.stringify({
+            messages: "send",
+            text: "test"
+          });
+
+          writeLine(s);
+          socket.send(a);
         }
-
-        socket.onopen = () => {
-            writeLine('connected');
-        }
-
-        socket.onclose = () => {
-            writeLine('closed');
-        }
-
-        socket.onmessage = (event) => {
-            writeLine(event.data);
-        }
-
-
-        msg.addEventListener('keydown', event => {
-            if (event.keyCode === 13) {
-                const s = msg.value;
-                msg.value = '';
-
-                let a = JSON.stringify({
-                    'messages': 'send',
-                    'text': 'test'
-                })
-
-                writeLine(s);
-                socket.send(a);
-            }
-        })
+      });
     </script>
-
-
-</body>
-
+  </body>
 </html>
