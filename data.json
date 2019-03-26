@@ -1,0 +1,43 @@
+{
+    "_id": {
+        "$oid": "5c940cac0174cb29e06ae23d"
+    },
+    "description": "Quo nulla nulla harum libero incidunt perspiciatis blanditiis expedita.",
+    "invitation_code": null,
+    "creator": {
+        "$oid": "5c940cab0174cb29e06ae230"
+    },
+    "name": "McKenzie, Crist and Konopelski",
+    "created_at": {
+        "$date": {
+            "$numberLong": "1553206444388"
+        }
+    },
+    "__v": {
+        "$numberInt": "0"
+    }
+}
+
+{
+    "_id": "",
+    "name": "lamp",
+    "name_short": "lamp",
+    "description": "Описание устройства",
+    "status": "on",
+    "voltage": "220",
+    "amperage": "2",
+    "adjustment": "200",
+    "location": [x, y],
+    "status_data": [{
+        "timestamp": "2018-08-10",
+        "status": "off",
+        "voltage": "220",
+        "amperage": "2",
+        "manager_id": "id",
+        "adjustment": "200",
+        "location": [x, y]
+    }],
+    "slaves": [
+        id1, id2, id3
+    ]
+}

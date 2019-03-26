@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="chat"></div>
+    <input type="text" id="msg" />
+
+    <script>
+        const writeLine = text => {
+            const line = document.createElement("div");
+            line.innerHTML = `<p>${text}</p>`;
+            chat.appendChild(line);
+        };
+
+
+        const ws = new WebSocket('ws://localhost:2999')
+
+        ws.onopen = () => {
+            writeLine('ONLINE')
+        }
+
+        ws.onclose = () => {
+            writeLine('DISCONNECTED')
+        }
+
+        ws.onmessage = response => {
+            writeLine(response.data);
+        }
+    </script>
+
+</body>
+
+</html>

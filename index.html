@@ -25,7 +25,7 @@
       const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk0MGNhYjAxNzRjYjI5ZTA2YWUyMzAiLCJpYXQiOjE1NTMzNTQyMDQsImV4cCI6MTU1NTk0NjIwNH0.daUoKosyt5i4eyKK0HSplfnJcnKc_bHDUk0eqFSd-CY";
       const socket = new WebSocket(
-        `ws://127.0.0.1:8888/socket?token=${tokenWork}`
+        `wss://pocketmsg.ru/socket?token=${tokenWork}`
       );
 
       // `ws://127.0.0.1:8888/socket?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Yzk0MGNhYjAxNzRjYjI5ZTA2YWUyMzAiLCJpYXQiOjE1NTMzNTQyMDQsImV4cCI6MTU1NTk0NjIwNH0.daUoKosyt5i4eyKK0HSplfnJcnKc_bHDUk0eqFSd-CY`
@@ -60,16 +60,7 @@
           msg.value = "";
 
           writeLine(text);
-          socket.send({
-            type: WEBSOCKET_SEND,
-            payload: `[
-                  "messages:send",
-                  ${JSON.stringify({
-                    text,
-                    recipient,
-                    messageId: 15
-                  })}]`
-          });
+          socket.send(text);
         }
       });
     </script>
